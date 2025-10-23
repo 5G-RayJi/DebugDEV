@@ -70,20 +70,54 @@
             <option value="eng">eng</option>
           </select>
         </div>
-
+        <!--value="wss://gs-dev.5gg.win/slot" (DEV) -->
         <div style="margin-bottom: 15px">
           <label for="socketUrl">Socket URL:</label><br />
-          <input
-            type="text"
-            id="socketUrl"
-            value="wss://gs-dev.5gg.win/slot"
-            style="
-              width: 100%;
-              padding: 5px;
-              border: 1px solid #ccc;
-              border-radius: 4px;
-            "
-          />
+          <div style="display: flex; gap: 5px;">
+            <input
+              type="text"
+              id="socketUrl"
+              value="ws://127.0.0.1:81/slot"
+              style="
+                flex: 1;
+                padding: 5px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+              "
+            />
+            <button
+              type="button"
+              id="devButton"
+              style="
+                padding: 5px 10px;
+                font-size: 12px;
+                background-color: #28a745;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                white-space: nowrap;
+              "
+            >
+              DEV
+            </button>
+            <button
+              type="button"
+              id="localButton"
+              style="
+                padding: 5px 10px;
+                font-size: 12px;
+                background-color: #6c757d;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                white-space: nowrap;
+              "
+            >
+              LOCAL
+            </button>
+          </div>
         </div>
 
         <div style="margin-bottom: 15px">
@@ -98,8 +132,7 @@
               border-radius: 4px;
               resize: vertical;
             "
-          >
-eyJpdiI6IlNzaHh0UjdFZVdrXC9VZXRBQW5ZellRPT0iLCJ2YWx1ZSI6Im5pTzVuZlFiVjdvampJMXhIVHZcL3pBPT0iLCJtYWMiOiIyNjlkNWU2ODQyZjJlNmNjZTM0NTkwYTgwNTlkNjhiNWJlODJjZWNjODQyNDBhNGEyZGIxMDc1ZjYyYzY4N2E5In0%3d(*--)5635bae4baf1ccbd1fbf5a65a51582e1</textarea
+          >(*--)5635bae4baf1ccbd1fbf5a65a51582e1</textarea
           >
         </div>
 
@@ -108,7 +141,7 @@ eyJpdiI6IlNzaHh0UjdFZVdrXC9VZXRBQW5ZellRPT0iLCJ2YWx1ZSI6Im5pTzVuZlFiVjdvampJMXhI
           <input
             type="text"
             id="account"
-            value="ray_ji"
+            value="guest"
             style="
               width: 100%;
               padding: 5px;
@@ -183,6 +216,19 @@ eyJpdiI6IlNzaHh0UjdFZVdrXC9VZXRBQW5ZellRPT0iLCJ2YWx1ZSI6Im5pTzVuZlFiVjdvampJMXhI
         const gameFrame = document.getElementById("gameFrame");
         const placeholder = document.getElementById("placeholder");
         const controlPanel = document.getElementById("controlPanel");
+        const devButton = document.getElementById("devButton");
+        const localButton = document.getElementById("localButton");
+        const socketUrlInput = document.getElementById("socketUrl");
+
+        // DEV 按鈕點擊事件
+        devButton.addEventListener("click", function () {
+          socketUrlInput.value = "wss://gs-dev.5gg.win/slot";
+        });
+
+        // LOCAL 按鈕點擊事件
+        localButton.addEventListener("click", function () {
+          socketUrlInput.value = "ws://127.0.0.1:81/slot";
+        });
 
         // OK 按鈕點擊事件
         okButton.addEventListener("click", function () {
