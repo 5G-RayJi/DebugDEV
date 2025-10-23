@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SR除錯工具</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="config.js"></script>
+
+    <div style="display: flex; height: 100vh; margin: 0; padding: 0">
+      <!-- 左側控制介面 -->
+      <div
+        id="controlPanel"
+        style="
+          width: 400px;
+          padding: 20px;
+          background-color: #f8f9fa;
+          border-right: 2px solid #dee2e6;
+          overflow-y: auto;
+          flex-shrink: 0;
+        "
+      >
+        <h2>遊戲配置設定</h2>
+
+        <div style="margin-bottom: 15px">
+          <label for="gameID">Game ID:</label><br />
+          <input
+            type="text"
+            id="gameID"
+            value="S5G-H5-99947"
+            style="
+              width: 100%;
+              padding: 5px;
+              border: 1px solid #ccc;
+              border-radius: 4px;
+            "
+          />
+        </div>
+
+        <div style="margin-bottom: 15px">
+          <label for="lang">語系:</label><br />
+          <select
+            id="lang"
+            style="
+              width: 100%;
+              padding: 5px;
+              border: 1px solid #ccc;
+              border-radius: 4px;
+            "
+          >
+            <option value="sch" selected>sch</option>
+            <option value="tai">tai</option>
+            <option value="bd">bd</option>
+            <option value="ind">ind</option>
+            <option value="por">por</option>
+            <option value="vie">vie</option>
+            <option value="in">in</option>
+            <option value="esp">esp</option>
+            <option value="jp">jp</option>
+            <option value="kor">kor</option>
+            <option value="tur">tur</option>
+            <option value="eng">eng</option>
+          </select>
+        </div>
+
+        <div style="margin-bottom: 15px">
+          <label for="socketUrl">Socket URL:</label><br />
+          <input
+            type="text"
+            id="socketUrl"
+            value="wss://gs-dev.5gg.win/slot"
+            style="
+              width: 100%;
+              padding: 5px;
+              border: 1px solid #ccc;
+              border-radius: 4px;
+            "
+          />
+        </div>
+
+        <div style="margin-bottom: 15px">
+          <label for="token">Token:</label><br />
+          <textarea
+            id="token"
+            rows="3"
+            style="
+              width: 100%;
+              padding: 5px;
+              border: 1px solid #ccc;
+              border-radius: 4px;
+              resize: vertical;
+            "
+          >
+eyJpdiI6IlNzaHh0UjdFZVdrXC9VZXRBQW5ZellRPT0iLCJ2YWx1ZSI6Im5pTzVuZlFiVjdvampJMXhIVHZcL3pBPT0iLCJtYWMiOiIyNjlkNWU2ODQyZjJlNmNjZTM0NTkwYTgwNTlkNjhiNWJlODJjZWNjODQyNDBhNGEyZGIxMDc1ZjYyYzY4N2E5In0%3d(*--)5635bae4baf1ccbd1fbf5a65a51582e1</textarea
+          >
+        </div>
+
+        <div style="margin-bottom: 15px">
+          <label for="account">帳號:</label><br />
+          <input
+            type="text"
+            id="account"
+            value="ray_ji"
+            style="
+              width: 100%;
+              padding: 5px;
+              border: 1px solid #ccc;
+              border-radius: 4px;
+            "
+          />
+        </div>
+
+        <div style="margin-bottom: 15px">
+          <label for="password">密碼:</label><br />
+          <input
+            type="text"
+            id="password"
+            value="1234"
+            style="
+              width: 100%;
+              padding: 5px;
+              border: 1px solid #ccc;
+              border-radius: 4px;
+            "
+          />
+        </div>
+
+        <button
+          id="okButton"
+          style="
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+          "
+        >
+          確定並開啟遊戲
+        </button>
+      </div>
+
+      <!-- 右側遊戲區域 -->
+      <div
+        style="
+          flex: 1;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: #e9ecef;
+        "
+      >
+        <iframe
+          src=""
+          id="gameFrame"
+          width="1280"
+          height="720"
+          style="display: none; border: 2px solid #007bff; border-radius: 8px"
+        ></iframe>
+        <div
+          id="placeholder"
+          style="text-align: center; color: #6c757d; font-size: 18px"
+        >
+          點擊「確定並開啟遊戲」開始遊戲
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // 等待頁面載入完成
+      document.addEventListener("DOMContentLoaded", function () {
+        const okButton = document.getElementById("okButton");
+        const gameFrame = document.getElementById("gameFrame");
+        const placeholder = document.getElementById("placeholder");
+        const controlPanel = document.getElementById("controlPanel");
+
+        // OK 按鈕點擊事件
+        okButton.addEventListener("click", function () {
+          // 從輸入框獲取配置
+          const gameConfig = {
+            gameID: document.getElementById("gameID").value,
+            lang: document.getElementById("lang").value,
+            socketUrl: document.getElementById("socketUrl").value,
+            token: document.getElementById("token").value,
+            account: document.getElementById("account").value,
+            password: document.getElementById("password").value,
+          };
+
+          console.log("設定配置:", gameConfig);
+
+          // 更新 window.gameConfig
+          window.gameConfig = gameConfig;
+
+          // 禁用所有控制介面元素
+          const inputs = controlPanel.querySelectorAll(
+            "input, select, textarea, button"
+          );
+          inputs.forEach(function (element) {
+            element.disabled = true;
+            element.style.opacity = "0.6";
+            element.style.cursor = "not-allowed";
+          });
+
+          // 隱藏佔位文字，顯示 iframe
+          placeholder.style.display = "none";
+          gameFrame.style.display = "block";
+
+          // 設置 iframe src
+          gameFrame.src =
+            `https://download-dev.5gg.win/${window.gameConfig.gameID}/index.html?serverDebug=true`;
+        });
+      });
+
+      // 監聽 iframe 的訊息
+      window.addEventListener("message", function (event) {
+        console.log("收到所有訊息:", event.data);
+
+        if (event.data.type === "CONFIG_REQUEST") {
+          console.log("收到 iframe CONFIG_REQUEST 訊息:", event.data);
+
+          // 發送配置到 iframe
+          const iframe = document.getElementById("gameFrame");
+          if (iframe && iframe.contentWindow) {
+            iframe.contentWindow.postMessage(
+              {
+                type: "CONFIG_RESPONSE",
+                gameConfig: window.gameConfig,
+              },
+              "*"
+            );
+            console.log("發送 gameConfig 到 iframe:", window.gameConfig);
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
