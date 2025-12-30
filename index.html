@@ -210,8 +210,58 @@
     </div>
 
     <script>
+      // 保存設定到 localStorage
+      function saveSettings() {
+        const gameConfig = {
+          gameID: document.getElementById("gameID").value,
+          lang: document.getElementById("lang").value,
+          socketUrl: document.getElementById("socketUrl").value,
+          token: document.getElementById("token").value,
+          account: document.getElementById("account").value,
+          password: document.getElementById("password").value,
+        };
+        localStorage.setItem("gameSettings", JSON.stringify(gameConfig));
+        console.log("設定已保存到 localStorage:", gameConfig);
+      }
+
+      // 從 localStorage 載入設定
+      function loadSettings() {
+        const savedSettings = localStorage.getItem("gameSettings");
+        if (savedSettings) {
+          try {
+            const gameConfig = JSON.parse(savedSettings);
+            console.log("從 localStorage 載入設定:", gameConfig);
+
+            // 填入各個欄位
+            if (gameConfig.gameID) {
+              document.getElementById("gameID").value = gameConfig.gameID;
+            }
+            if (gameConfig.lang) {
+              document.getElementById("lang").value = gameConfig.lang;
+            }
+            if (gameConfig.socketUrl) {
+              document.getElementById("socketUrl").value = gameConfig.socketUrl;
+            }
+            if (gameConfig.token) {
+              document.getElementById("token").value = gameConfig.token;
+            }
+            if (gameConfig.account) {
+              document.getElementById("account").value = gameConfig.account;
+            }
+            if (gameConfig.password) {
+              document.getElementById("password").value = gameConfig.password;
+            }
+          } catch (error) {
+            console.error("載入設定時發生錯誤:", error);
+          }
+        }
+      }
+
       // 等待頁面載入完成
       document.addEventListener("DOMContentLoaded", function () {
+        // 先載入保存的設定
+        loadSettings();
+
         const okButton = document.getElementById("okButton");
         const gameFrame = document.getElementById("gameFrame");
         const placeholder = document.getElementById("placeholder");
@@ -243,6 +293,9 @@
           };
 
           console.log("設定配置:", gameConfig);
+
+          // 保存設定到 localStorage
+          saveSettings();
 
           // 更新 window.gameConfig
           window.gameConfig = gameConfig;
